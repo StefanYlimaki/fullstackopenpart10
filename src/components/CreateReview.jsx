@@ -65,7 +65,7 @@ export const ReviewForm = ({ onSubmit }) => {
             />
           </View>
           <Button testID="submit" onPress={handleSubmit}>
-            Sign in
+            Submit review
           </Button>
         </View>
       )}
