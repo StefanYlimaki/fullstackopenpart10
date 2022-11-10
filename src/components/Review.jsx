@@ -22,10 +22,9 @@ const Review = ({ review }) => {
       flexShrink: 1,
     },
     ratingCircle: {
-      width: 30,
-      height: 30,
-      borderRadius: 50,
-      fontSize: 10,
+      width: 40,
+      height: 40,
+      borderRadius: 20,
       color: 'blue',
       backgroundColor: 'white',
       borderWidth: 2,
@@ -34,8 +33,9 @@ const Review = ({ review }) => {
     retingContainter: {
       alignSelf: 'center',
       color: 'blue',
-      paddingTop: 2,
-      paddingRight: 1
+      fontSize: 16,
+      paddingTop: 6,
+      fontWeight: "500"
     },
     textContainer: {
       paddingTop: 10,
@@ -45,7 +45,6 @@ const Review = ({ review }) => {
 
   const timeStamp = Date.parse(review.createdAt)
   const date = new Date(timeStamp)
-  console.log(date.toDateString())
 
   return(
     <View >
