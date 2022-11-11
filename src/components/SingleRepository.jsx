@@ -1,23 +1,45 @@
 import { FlatList, View } from "react-native";
 import { useParams } from "react-router-native";
+import { StyleSheet } from "react-native";
 import useRepository from "../hooks/useRepository";
 import RepositoryItem from "./RepositoryItem";
 import Text from "./Text";
 import Review from "./Review";
 
+const styles = StyleSheet.create({
+  separator: {
+    height: 10,
+  },
+  orderByContainer: {
+    height: 60,
+    borderWidth: 2,
+  },
+});
+const ItemSeparator = () => <View style={styles.separator} />;
+
 const SingleRepository = () => {
   const { id } = useParams();
-  const { repository }  = useRepository(id);
+  const { repository, fetchMore }  = useRepository({
+    repositoryId: id,
+    first: 2
+  });
+
+  const onEndReach = () => {
+    fetchMore();
+    console.log('reviews end reached')
+  }
 
   if (repository) {
     return (
       <View>
-        <RepositoryItem viewingSingle={true} repository={repository}/>
         <FlatList 
+            ListHeaderComponent={<RepositoryItem viewingSingle={true} repository={repository}/>}
             data={repository.reviews.edges}
             renderItem={({ item }) => (
                 <Review key={item.id} review={item.node} />
             )}
+            ItemSeparatorComponent={ItemSeparator}
+            onEndReached={onEndReach}
         />
       </View>
     );

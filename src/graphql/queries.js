@@ -46,10 +46,22 @@ export const GET_CURRENT_USER = gql`
 `;
 
 export const SINGLE_REPOSITORY = gql`
-  query ($repositoryId: ID!) {
+  query(
+    $repositoryId: ID!,
+    $after: String, 
+    $first: Int) {
     repository(id: $repositoryId) {
       ...repositoryBaseFields
-      reviews {
+      reviews(
+        first: $first,
+        after: $after,
+      ) {
+        pageInfo {
+          endCursor
+          hasNextPage
+          hasPreviousPage
+          startCursor
+        }
         edges {
           node {
             id

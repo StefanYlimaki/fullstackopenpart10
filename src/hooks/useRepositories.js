@@ -22,7 +22,6 @@ const useRepositories = (variables) => {
         },
       });
     };
-  
 
     return { 
       repositories: data?.repositories,
