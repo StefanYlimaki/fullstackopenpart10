@@ -1,6 +1,6 @@
-import { gql } from '@apollo/client';
+import { gql } from "@apollo/client";
 
-import { USER_BASE_FIELDS } from './fragments';
+import { USER_BASE_FIELDS } from "./fragments";
 
 export const AUTHENTICATE = gql`
   mutation authorize($credentials: AuthenticateInput!) {
@@ -16,10 +16,19 @@ export const AUTHENTICATE = gql`
 `;
 
 export const CREATE_REVIEW = gql`
-  mutation($review: CreateReviewInput!) {
+  mutation ($review: CreateReviewInput!) {
     createReview(review: $review) {
       repositoryId
     }
   }
+`;
 
-`
+export const CREATE_USER = gql`
+  mutation ($user: CreateUserInput) {
+    createUser(user: $user) {
+      username
+      createdAt
+      id
+    }
+  }
+`;
