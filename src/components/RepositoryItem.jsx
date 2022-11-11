@@ -87,6 +87,7 @@ const RepositoryItem = ({ repository, viewingSingle }) => {
   } = repository;
 
   return (
+    <View>
       <View testID='repositoryItem' style={styles.container}>
         <View style={styles.topContainer}>
           <View style={styles.avatarContainer}>
@@ -119,11 +120,15 @@ const RepositoryItem = ({ repository, viewingSingle }) => {
           <CountItem count={ratingAverage} label="Rating" />
         </View>
         { viewingSingle 
-          ? <View style={{ paddingTop: 15 }}>
-              <Button onPress={() => Linking.openURL(repository.url)} >Open in Github</Button>
+          ? <View>
+              <View style={{ paddingTop: 15 }}>
+                <Button onPress={() => Linking.openURL(repository.url)} >Open in Github</Button>
+              </View>
             </View>
           : <></> }
       </View>
+      { viewingSingle ? <View style={{ height: 10, backgroundColor: "#e1e4e8"}}></View> : <></>}
+    </View>
   );
 };
 

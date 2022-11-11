@@ -4,10 +4,6 @@ import { View, StyleSheet } from "react-native";
 const Review = ({ review }) => {
 
   const styles = StyleSheet.create({
-    separator: {
-      height: 10,
-      backgroundColor: 'grey'
-    },
     containerRow: {
       display: "flex",
       flexDirection: "row",
@@ -48,7 +44,6 @@ const Review = ({ review }) => {
 
   return(
     <View >
-      <View style={styles.separator}></View>
       <View style={styles.containerRow}>
         <View style={styles.ratingCircle}>
           <Text style={styles.retingContainter} >

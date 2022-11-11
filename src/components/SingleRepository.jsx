@@ -21,12 +21,11 @@ const SingleRepository = () => {
   const { id } = useParams();
   const { repository, fetchMore }  = useRepository({
     repositoryId: id,
-    first: 2
+    first: 3
   });
 
   const onEndReach = () => {
     fetchMore();
-    console.log('reviews end reached')
   }
 
   if (repository) {
@@ -40,6 +39,7 @@ const SingleRepository = () => {
             )}
             ItemSeparatorComponent={ItemSeparator}
             onEndReached={onEndReach}
+            contentContainerStyle={{ paddingBottom: 100 }}
         />
       </View>
     );
