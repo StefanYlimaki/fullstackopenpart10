@@ -1,13 +1,13 @@
 import { FlatList, View } from "react-native";
 import { useParams } from "react-router-native";
-import useRepositories from "../hooks/useRepositories";
+import useRepository from "../hooks/useRepository";
 import RepositoryItem from "./RepositoryItem";
 import Text from "./Text";
 import Review from "./Review";
 
 const SingleRepository = () => {
   const { id } = useParams();
-  const { repository } = useRepositories(id);
+  const { repository }  = useRepository(id);
 
   if (repository) {
     return (
