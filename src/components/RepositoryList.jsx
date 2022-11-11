@@ -1,12 +1,15 @@
 import { FlatList, View, StyleSheet, Pressable } from "react-native";
 import { useNavigate } from "react-router-native";
-import { Picker } from "@react-native-picker/picker";
+import { Searchbar } from "react-native-paper";
 
 import * as React from "react";
 
 import RepositoryItem from "./RepositoryItem";
 import useRepositories from "../hooks/useRepositories";
 import { useState } from "react";
+import { useDebounce } from "use-debounce";
+import OrderBy from "./OrderBy";
+import Search from "./Search";
 
 const styles = StyleSheet.create({
   separator: {
@@ -15,12 +18,23 @@ const styles = StyleSheet.create({
   orderByContainer: {
     height: 60,
     borderWidth: 2,
-  }
+  },
 });
 
 const ItemSeparator = () => <View style={styles.separator} />;
 
-export const RepositoryListContainer = ({ repositories }) => {
+const RepositoryList = () => {
+  const [search, setSearch] = useState("");
+  const [debounceValue] = useDebounce(search, 500);
+  const [orderBy, setOrderBy] = useState("CREATED_AT");
+  const [orderDirection, setOrderDirection] = useState("DESC");
+
+  const { repositories } = useRepositories({
+    orderBy: orderBy,
+    orderDirection: orderDirection,
+    searchKeyword: debounceValue,
+  });
+
   const navigate = useNavigate();
   const repositoryNodes = repositories
     ? repositories.edges.map((edge) => edge.node)
@@ -30,8 +44,29 @@ export const RepositoryListContainer = ({ repositories }) => {
     navigate(`/${id}`);
   };
 
+  const handleOrderByChange = (newOrderBy) => {
+    if (newOrderBy === "Latest repositories") {
+      setOrderBy("CREATED_AT");
+      setOrderDirection("DESC");
+    }
+    if (newOrderBy === "Highest rated repositories") {
+      setOrderBy("RATING_AVERAGE");
+      setOrderDirection("DESC");
+    }
+    if (newOrderBy === "Lowest rated repositories") {
+      setOrderBy("RATING_AVERAGE");
+      setOrderDirection("ASC");
+    }
+  };
+
   return (
     <FlatList
+      ListHeaderComponent={
+        <View>
+          <Search search={ search } setSearch={ setSearch } />
+          <OrderBy handleChange={ handleOrderByChange }/>
+        </View>
+      }
       data={repositoryNodes}
       keyExtractor={({ id }) => id}
       renderItem={({ item }) => (
@@ -41,52 +76,6 @@ export const RepositoryListContainer = ({ repositories }) => {
       )}
       ItemSeparatorComponent={ItemSeparator}
     />
-  );
-};
-
-const RepositoryList = () => {
-  const [orderBy, setOrderBy] = useState("CREATED_AT");
-  const [orderDirection, setOrderDirection] = useState("DESC");
-  const [orderByExplanation, setOrderByExplanation] = useState(
-    "Latest repositories"
-  );
-
-  const { repositories } = useRepositories({
-    orderBy: orderBy,
-    orderDirection: orderDirection,
-  });
-
-  const handleFilterChange = (newFilter) => {
-    if (newFilter === "Latest repositories") {
-      setOrderBy("CREATED_AT");
-      setOrderDirection("DESC");
-      setOrderByExplanation("Latest repositories");
-    }
-    if (newFilter === "Highest rated repositories") {
-      setOrderBy("RATING_AVERAGE");
-      setOrderDirection("DESC");
-      setOrderByExplanation("Highest rated repositories");
-    }
-    if (newFilter === "Lowest rated repositories") {
-      setOrderBy("RATING_AVERAGE");
-      setOrderDirection("ASC");
-      setOrderByExplanation("Lowest rated repositories");
-    }
-  };
-
-  return (
-    <View>
-      <Picker
-        selectedValue={orderByExplanation}
-        onValueChange={(itemValue, itemIndex) => handleFilterChange(itemValue)}
-        style={styles.orderByContainer}
-      >
-        <Picker.Item label="Latest repositories" value="Latest repositories" />
-        <Picker.Item label="Highest rated repositories" value="Highest rated repositories" />
-        <Picker.Item label="Lowest rated repositories" value="Lowest rated repositories" />
-      </Picker>
-      <RepositoryListContainer repositories={repositories} />
-    </View>
   );
 };
 
