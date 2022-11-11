@@ -56,12 +56,7 @@ const RepositoryList = () => {
     orderDirection: orderDirection,
   });
 
-  const openMenu = () => setVisible(true);
-  const closeMenu = () => setVisible(false);
-  const [visible, setVisible] = React.useState(false);
-
   const handleFilterChange = (newFilter) => {
-    closeMenu();
     if (newFilter === "Latest repositories") {
       setOrderBy("CREATED_AT");
       setOrderDirection("DESC");
