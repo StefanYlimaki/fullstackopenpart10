@@ -29,7 +29,8 @@ const RepositoryList = () => {
   const [orderBy, setOrderBy] = useState("CREATED_AT");
   const [orderDirection, setOrderDirection] = useState("DESC");
 
-  const { repositories } = useRepositories({
+  const { repositories, fetchMore } = useRepositories({
+    first: 8,
     orderBy: orderBy,
     orderDirection: orderDirection,
     searchKeyword: debounceValue,
@@ -59,6 +60,10 @@ const RepositoryList = () => {
     }
   };
 
+  const onEndReach = () => {
+    fetchMore();
+  }
+
   return (
     <FlatList
       ListHeaderComponent={
@@ -75,6 +80,8 @@ const RepositoryList = () => {
         </Pressable>
       )}
       ItemSeparatorComponent={ItemSeparator}
+      onEndReached={onEndReach}
+      onEndReachedThreshold={0.5}
     />
   );
 };

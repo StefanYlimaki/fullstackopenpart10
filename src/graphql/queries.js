@@ -18,6 +18,12 @@ export const GET_REPOSITORIES = gql`
         after: $after, 
         first: $first
       ) {
+        pageInfo {
+          endCursor
+          hasNextPage
+          hasPreviousPage
+          startCursor
+        }
         edges {
           node {
             ...repositoryBaseFields
